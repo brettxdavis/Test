@@ -1,32 +1,36 @@
 const jsPsych = initJsPsych({
   on_finish: function () {
-    jsPsych.data.displayData(); // shows data at end for now
+    jsPsych.data.displayData();  // Show collected data for now
   }
 });
 
 const timeline = [];
 
-// Trial 1: Button welcome
+// Welcome trial
 timeline.push({
-  type: 'html-button-response',
-  stimulus: '<p>Welcome to the demo study!</p><p>Click when ready.</p>',
-  choices: ['Continue']
+  type: jsPsychHtmlButtonResponse,
+  stimulus: '<p>Welcome to the study!</p><p>Click below to begin.</p>',
+  choices: ['Start']
 });
 
-// Trial 2: Webcam display (live, no recording)
+// Webcam display trial (live feed only)
 timeline.push({
-  type: 'mirror-camera',
+  type: jsPsychMirrorCamera,
   width: 640,
   height: 480,
-  prompt: '<p>Look into the webcam and speak naturally for 30 seconds.</p>',
-  trial_duration: 30000
+  prompt: '<p>Look into the camera and speak naturally for 30 seconds.</p>',
+  trial_duration: 30000, // 30 seconds
+  show_recording_button: false // Just a live mirror, no recording
 });
 
-// Trial 3: Reflection question
+// Reflection survey
 timeline.push({
-  type: 'survey-text',
-  questions: [{ prompt: 'How did that feel?' }]
+  type: jsPsychSurveyText,
+  questions: [
+    { prompt: "How did that feel?", name: 'reflection', rows: 4, columns: 50 }
+  ],
+  button_label: "Submit"
 });
 
-// Start the study
+// Run it!
 jsPsych.run(timeline);
